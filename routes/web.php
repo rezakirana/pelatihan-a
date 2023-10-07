@@ -18,6 +18,22 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+// Route untuk CRUD Brand
+Route::middleware(['auth','verified'])->group(function(){
+    // menampilkan data
+    Route::get('/brands',[BrandController::class,'index'])->name('brand.index');
+    // menampilkan form tambah data
+    Route::get('/brands/create',[BrandController::class, 'create'])->name('brand.create');
+    // menampilkan data ke database
+    Route::post('/brands',[BrandController::class,'store'])->name('brand.store');
+    // menampilkan form edit data
+    Route::get('/brands/{id}/edit',[BrandController::class, 'edit'])->name('brand.edit');
+    // menampilkan data ke database
+    Route::put('/brands/{id}',[BrandController::class, 'update'])->name('brand.update');
+    // menghapud data dari dataabase
+    Route::delete('/brands/{id}',[BrandController::class, 'destroy'])->name('brand.destroy');
+}
+);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -29,8 +45,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Route untuk CRUD Brand
-Route::get('/brands', [BrandController::class, 'index'])->name('brand');
-Route::post('/brands', [BrandController::class, 'store'])->name('brand.store');
+
 
 require __DIR__.'/auth.php';
